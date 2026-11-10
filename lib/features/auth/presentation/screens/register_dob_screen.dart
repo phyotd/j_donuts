@@ -83,90 +83,153 @@ class _RegisterDobScreenState extends State<RegisterDobScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Date of Birth')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+        actions: [RegistrationProgressBar(progress: 1.0)],
+      ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const RegistrationProgressBar(progress: 1.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 40),
 
-                const SizedBox(height: 40),
+                      const Text(
+                        'What is your date of birth?',
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
 
-                const Text(
-                  'What is your date of birth?',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                ),
+                      const SizedBox(height: 12),
 
-                const SizedBox(height: 12),
+                      const Text(
+                        'Please select your date of birth.',
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
 
-                const Text(
-                  'Please select your date of birth.',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
+                      const SizedBox(height: 32),
 
-                const SizedBox(height: 32),
-
-                TextFormField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    hintText: _selectedDate == null
-                        ? 'Select your date of birth'
-                        : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    suffixIcon: const Icon(Icons.calendar_today),
-                  ),
-                  onTap: () async {
-                    final now = DateTime.now();
-                    final pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime(now.year - 13, now.month, now.day),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime(now.year - 13, now.month, now.day),
-                    );
-
-                    if (pickedDate != null) {
-                      setState(() {
-                        _selectedDate = pickedDate;
-                      });
-                    }
-                  },
-                  validator: (value) {
-                    if (_selectedDate == null) {
-                      return 'Please select your date of birth';
-                    }
-
-                    if (!_isAtLeast13) {
-                      return 'You must be at least 13 years old';
-                    }
-
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 32),
-
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _onRegister,
-                    child: _isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            'Register',
-                            style: TextStyle(fontSize: 16),
+                      TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          hintText: _selectedDate == null
+                              ? 'Select your date of birth'
+                              : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
+                          suffixIcon: const Icon(Icons.calendar_today),
+                        ),
+                        onTap: () async {
+                          final now = DateTime.now();
+
+                          final pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime(
+                              now.year - 13,
+                              now.month,
+                              now.day,
+                            ),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(
+                              now.year - 13,
+                              now.month,
+                              now.day,
+                            ),
+                          );
+
+                          if (pickedDate != null) {
+                            setState(() {
+                              _selectedDate = pickedDate;
+                            });
+                          }
+                        },
+                        validator: (value) {
+                          if (_selectedDate == null) {
+                            return 'Please select your date of birth';
+                          }
+
+                          if (!_isAtLeast13) {
+                            return 'You must be at least 13 years old';
+                          }
+
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+
+            // Fixed bottom section
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _onRegister,
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              'Register',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Text.rich(
+                    TextSpan(
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        height: 1.5,
+                      ),
+                      children: [
+                        const TextSpan(
+                          text:
+                              'By continuing, you acknowledge that you have read and\n'
+                              'agree to our ',
+                        ),
+                        TextSpan(
+                          text: 'Terms of Use',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        const TextSpan(text: ' and '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        const TextSpan(text: '.'),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

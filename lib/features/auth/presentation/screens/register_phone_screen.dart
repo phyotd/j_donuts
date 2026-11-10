@@ -19,19 +19,58 @@ class RegisterPhoneScreen extends ConsumerStatefulWidget {
 class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
+  final _phoneFocusNode = FocusNode();
 
   bool _isLoading = false;
+  bool _showPhoneError = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _phoneFocusNode.addListener(() {
+      setState(() {
+        _showPhoneError = !_phoneFocusNode.hasFocus;
+      });
+    });
+  }
 
   @override
   void dispose() {
     _phoneController.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
 
-  Future<void> _onContinue() async {
-    if (!_formKey.currentState!.validate()) return;
+  String _normalizePhoneNumber(String value) {
+    String phone = value.replaceAll(RegExp(r'[\s-]'), '');
 
-    final phoneNumber = _phoneController.text.trim();
+    if (phone.startsWith('0')) {
+      phone = phone.substring(1);
+    }
+
+    return phone;
+  }
+
+  bool get _isPhoneValid {
+    final phone = _normalizePhoneNumber(_phoneController.text);
+    return RegExp(r'^9[0-9]{7,9}$').hasMatch(phone);
+  }
+
+  String get _phoneErrorMessage {
+    if (_phoneController.text.trim().isEmpty) {
+      return 'Please enter your phone number';
+    }
+
+    return 'Please enter a valid Myanmar phone number';
+  }
+
+  Future<void> _onContinue() async {
+    if (!_isPhoneValid || _isLoading) return;
+
+    final normalizedPhone = _normalizePhoneNumber(_phoneController.text.trim());
+
+    final phoneNumber = '+95$normalizedPhone';
 
     setState(() {
       _isLoading = true;
@@ -40,6 +79,8 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
     final result = await ref
         .read(authNotifierProvider.notifier)
         .sendOtp(phoneNumber: phoneNumber);
+
+    if (!mounted) return;
 
     setState(() {
       _isLoading = false;
@@ -54,7 +95,7 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(result.failure.message),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
     }
@@ -62,7 +103,15 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isPhoneValid = _isPhoneValid;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+        actions: [RegistrationProgressBar(progress: 0.25)],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -71,9 +120,6 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 12),
-                // Progress indicator
-                RegistrationProgressBar(progress: 0.25),
                 const SizedBox(height: 48),
                 const Center(
                   child: Icon(
@@ -116,6 +162,7 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
 
                 TextFormField(
                   controller: _phoneController,
+                  focusNode: _phoneFocusNode,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Enter phone number',
@@ -138,19 +185,10 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    errorText: _showPhoneError && !isPhoneValid
+                        ? _phoneErrorMessage
+                        : null,
                   ),
-
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-
-                    if (!RegExp(r'^[0-9]{8,10}$').hasMatch(value.trim())) {
-                      return 'Please enter a valid phone number';
-                    }
-
-                    return null;
-                  },
                 ),
 
                 const SizedBox(height: 24),
@@ -160,7 +198,7 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                   width: double.infinity,
                   height: 52,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _onContinue,
+                    onPressed: isPhoneValid && !_isLoading ? _onContinue : null,
                     child: _isLoading
                         ? const CircularProgressIndicator()
                         : const Text(
@@ -170,12 +208,40 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Center(
-                  child: Text(
-                    'By continuing, you agree to our Terms & Privacy Policy.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                Text.rich(
+                  TextSpan(
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      height: 1.5,
+                    ),
+                    children: [
+                      const TextSpan(
+                        text:
+                            'By continuing, you acknowledge that you have read and\n'
+                            'agree to our ',
+                      ),
+                      TextSpan(
+                        text: 'Terms of Use',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        // TODO: Open Terms of Use
+                        // onTap: () {},
+                      ),
+                      const TextSpan(text: ' and '),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        // TODO: Open Privacy Policy
+                        // onTap: () {},
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
                   ),
+                  textAlign: TextAlign.center,
                 ),
 
                 const SizedBox(height: 16),

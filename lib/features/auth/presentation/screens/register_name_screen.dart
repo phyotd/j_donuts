@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:j_donuts/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:j_donuts/features/auth/presentation/screens/register_dob_screen.dart';
 import 'package:j_donuts/features/auth/presentation/widgets/registration_progress_bar.dart';
@@ -65,104 +66,162 @@ class _RegisterNameScreenState extends ConsumerState<RegisterNameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+        actions: [RegistrationProgressBar(progress: 0.75)],
+      ),
+
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const RegistrationProgressBar(progress: 0.75),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 40),
 
-                const SizedBox(height: 40),
+                      const Text(
+                        'What is your name?',
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
 
-                const Text(
-                  'What is your name?',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                ),
+                      const SizedBox(height: 12),
 
-                const SizedBox(height: 12),
+                      const Text(
+                        'Please enter your first and last name.',
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
 
-                const Text(
-                  'Please enter your first and last name.',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
+                      const SizedBox(height: 32),
 
-                const SizedBox(height: 32),
+                      const Text(
+                        'First Name',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
 
-                const Text(
-                  'First Name',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
+                      const SizedBox(height: 8),
 
-                const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _firstNameController,
+                        maxLength: 50,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your first name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Please enter your first name';
+                          }
 
-                TextFormField(
-                  controller: _firstNameController,
-                  maxLength: 15,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your first name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your first name';
-                    }
+                          if (value.trim().length > 50) {
+                            return 'First name must not exceed 50 characters';
+                          }
 
-                    if (value.trim().length > 15) {
-                      return 'First name must not exceed 15 characters';
-                    }
-                    return null;
-                  },
-                ),
+                          return null;
+                        },
+                      ),
 
-                const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                const Text(
-                  'Last Name (Optional)',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
+                      const Text(
+                        'Last Name (Optional)',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
 
-                const SizedBox(height: 8),
+                      const SizedBox(height: 8),
 
-                TextFormField(
-                  controller: _lastNameController,
-                  maxLength: 15,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your last name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value != null && value.trim().length > 15) {
-                      return 'Last name must not exceed 15 characters';
-                    }
-                    return null;
-                  },
-                ),
+                      TextFormField(
+                        controller: _lastNameController,
+                        maxLength: 50,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your last name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value != null && value.trim().length > 50) {
+                            return 'Last name must not exceed 50 characters';
+                          }
 
-                const SizedBox(height: 32),
-
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: _onContinue,
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(fontSize: 16),
-                    ),
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+
+            // Fixed bottom section
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: _onContinue,
+                      child: const Text(
+                        'Continue',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Text.rich(
+                    TextSpan(
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        height: 1.5,
+                      ),
+                      children: [
+                        const TextSpan(
+                          text:
+                              'By continuing, you acknowledge that you have read and\n'
+                              'agree to our ',
+                        ),
+                        TextSpan(
+                          text: 'Terms of Use',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        const TextSpan(text: ' and '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        const TextSpan(text: '.'),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

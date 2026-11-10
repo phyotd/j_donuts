@@ -1,4 +1,5 @@
-import 'package:j_donuts/features/products/data/datasources/product_mock_data.dart';
+
+import 'package:j_donuts/core/database/app_database.dart';
 import 'package:j_donuts/features/products/data/models/product_model.dart';
 
 abstract class ProductLocalDataSource {
@@ -6,10 +7,26 @@ abstract class ProductLocalDataSource {
 }
 
 class ProductLocalDataSourceImpl implements ProductLocalDataSource {
+  ProductLocalDataSourceImpl(this.database);
+
+  final AppDatabase database;
+
   @override
   Future<List<ProductModel>> getProducts() async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    final products = await database.getAllProducts();
 
-    return ProductMockData.products;
+    return products.map((product) {
+      return ProductModel(
+        id: product.id,
+        code: product.code,
+        price: product.price,
+        isNew: product.isNew,
+        isPopular: product.isPopular,
+        discountPercent: product.discountPercent,
+        name: product.name,
+        description: product.description,
+        imageUrl: product.imageUrl,
+      );
+    }).toList();
   }
 }

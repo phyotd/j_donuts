@@ -3,6 +3,7 @@ class Product {
   final String code;
   final double price;
   final bool isNew;
+  final bool isPopular;
   final double? discountPercent;
   final String description;
   final String name;
@@ -13,6 +14,7 @@ class Product {
     required this.code,
     required this.price,
     required this.isNew,
+    this.isPopular = false,
     this.discountPercent,
     required this.description,
     required this.name,

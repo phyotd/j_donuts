@@ -9,6 +9,7 @@ class ProductMockData {
       code: 'JD022123',
       price: 3200,
       isNew: true,
+      isPopular: true,
       discountPercent: null,
       name: 'Coconut Donut',
       description: 'Enjoy our scrumptious coconut donut '
@@ -20,6 +21,7 @@ class ProductMockData {
       code: 'JD022124',
       price: 3500,
       isNew: false,
+      isPopular: true,
       discountPercent: 10,
       name: 'Chocolate Donut',
       description: 'Soft and fluffy donut covered with '
@@ -31,6 +33,7 @@ class ProductMockData {
       code: 'JD022125',
       price: 3500,
       isNew: true,
+      isPopular: false,
       discountPercent: null,
       name: 'Strawberry Donut',
       description: 'Delicious donut with sweet strawberry '
@@ -42,6 +45,7 @@ class ProductMockData {
       code: 'JD022126',
       price: 3800,
       isNew: false,
+      isPopular: false,
       discountPercent: 15,
       name: 'Matcha Donut',
       description: 'A soft donut topped with Japanese '
@@ -53,6 +57,7 @@ class ProductMockData {
       code: 'JD022127',
       price: 3000,
       isNew: false,
+      isPopular: false,
       discountPercent: null,
       name: 'Vanilla Donut',
       description: 'Classic soft donut with smooth '
@@ -64,6 +69,7 @@ class ProductMockData {
       code: 'JD022128',
       price: 4000,
       isNew: true,
+      isPopular: true,
       discountPercent: 10,
       name: 'Oreo Cream Donut',
       description: 'Cream-filled donut topped with '
@@ -75,6 +81,7 @@ class ProductMockData {
       code: 'JD022129',
       price: 4200,
       isNew: false,
+      isPopular: true,
       discountPercent: null,
       name: 'Boston Cream Donut',
       description: 'Classic donut filled with smooth '
@@ -86,6 +93,7 @@ class ProductMockData {
       code: 'JD022130',
       price: 3800,
       isNew: false,
+      isPopular: false,
       discountPercent: 20,
       name: 'Caramel Donut',
       description: 'Fresh donut covered with sweet '
@@ -97,6 +105,7 @@ class ProductMockData {
       code: 'JD022131',
       price: 3600,
       isNew: true,
+      isPopular: false,
       discountPercent: null,
       name: 'Blueberry Donut',
       description: 'Soft donut with fruity blueberry '
@@ -108,6 +117,7 @@ class ProductMockData {
       code: 'JD022132',
       price: 2800,
       isNew: false,
+      isPopular: false,
       discountPercent: null,
       name: 'Sugar Donut',
       description: 'Simple and fluffy donut coated '

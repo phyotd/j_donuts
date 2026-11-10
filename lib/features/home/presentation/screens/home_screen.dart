@@ -7,6 +7,8 @@ import 'package:j_donuts/features/products/presentation/providers/product_provid
 
 // Import your existing auth notifier provider file.
 import 'package:j_donuts/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:j_donuts/features/products/domain/entities/product.dart';
+import 'package:j_donuts/features/products/presentation/widgets/product_skeleton_widget.dart';
 import 'package:j_donuts/features/products/presentation/widgets/product_widget.dart';
 import 'package:j_donuts/features/rewards/presentation/screens/rewards_screen.dart';
 
@@ -158,29 +160,102 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return productsAsync.when(
       data: (products) {
-        if (products.isEmpty) {
-          return const Center(child: Text('No products available'));
-        }
+        final seasonalProducts = products
+            .where((product) => product.isNew)
+            .toList();
 
-        return GridView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          itemCount: products.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 0.68,
+        final popularProducts = products
+            .where((product) => product.isPopular)
+            .toList();
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProductSection(
+                title: 'Seasonal Specials',
+                products: seasonalProducts,
+              ),
+              const SizedBox(height: 24),
+              _buildProductSection(title: 'Popular', products: popularProducts),
+              const SizedBox(height: 24),
+              _buildProductSection(title: 'All Donuts', products: products),
+            ],
           ),
-          itemBuilder: (context, index) {
-            final product = products[index];
-
-            return ProductWidget(product: product);
-          },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) =>
-          Center(child: Text('Something went wrong: $error')),
+      loading: () => _buildProductLoading(),
+      error: (error, stackTrace) {
+        return Center(child: Text('Something went wrong: $error'));
+      },
+    );
+  }
+
+  Widget _buildProductSection({
+    required String title,
+    required List<Product> products,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 12),
+        if (products.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text('No products available'),
+          )
+        else
+          SizedBox(
+            height: 245,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              scrollDirection: Axis.horizontal,
+              itemCount: products.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 12),
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  width: 165,
+                  child: ProductWidget(product: products[index]),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildProductLoading() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          for (int section = 0; section < 3; section++) ...[
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 245,
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                scrollDirection: Axis.horizontal,
+                itemCount: 4,
+                separatorBuilder: (_, _) => const SizedBox(width: 12),
+                itemBuilder: (context, index) {
+                  return const SizedBox(
+                    width: 165,
+                    child: ProductSkeletonWidget(),
+                  );
+                },
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 

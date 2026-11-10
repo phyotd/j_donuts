@@ -1,4 +1,4 @@
-import 'package:j_donuts/features/products/domain/entities/product.dart';
+import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
   const ProductModel({
@@ -6,6 +6,7 @@ class ProductModel extends Product {
     required super.code,
     required super.price,
     required super.isNew,
+    super.isPopular = false,
     super.discountPercent,
     required super.description,
     required super.name,
@@ -18,6 +19,7 @@ class ProductModel extends Product {
       code: json['code'] as String,
       price: (json['price'] as num).toDouble(),
       isNew: json['isNew'] as bool? ?? false,
+      isPopular: json['isPopular'] as bool? ?? false,
       discountPercent: (json['discountPercent'] as num?)?.toDouble(),
       description: json['description'] as String,
       name: json['name'] as String,
@@ -31,6 +33,7 @@ class ProductModel extends Product {
       'code': code,
       'price': price,
       'isNew': isNew,
+      'isPopular': isPopular,
       'discountPercent': discountPercent,
       'description': description,
       'name': name,

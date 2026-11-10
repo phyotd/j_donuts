@@ -190,7 +190,5 @@ to match it.
 
 ## 10. Time Spent
 
-**Total time spent:** 2 days
+**Total time spent:** 1.5 days
 
-Record the actual hours or days spent before submitting this README. Do
-not include an estimate unless it reflects your working time.

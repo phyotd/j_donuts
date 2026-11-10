@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:j_donuts/core/utils/result.dart';
 import 'package:go_router/go_router.dart';
 import 'package:j_donuts/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:j_donuts/features/auth/domain/entities/user.dart' as auth;
 import 'package:j_donuts/features/auth/presentation/widgets/registration_progress_bar.dart';
 
 class VerifyOtpScreen extends ConsumerStatefulWidget {
@@ -41,24 +42,22 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
     if (!mounted) return;
 
     setState(() => _isLoading = false);
+    if (result is Success<auth.User?>) {
+      final user = (result).data;
+      if (user == null) {
+        // New user → Name screen
+        context.goNamed(
+          'name',
+          pathParameters: {'phoneNumber': widget.phoneNumber},
+        );
+      } else {
+        context.goNamed('home');
+      }
+    } else if (result is Error<auth.User?>) {
+      final failure = (result).failure;
 
-    if (result is Success<void>) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Phone number verified successfully!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      context.goNamed(
-        'name',
-        pathParameters: {'phoneNumber': widget.phoneNumber},
-      );
-    } else if (result is Error<void>) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.failure.message),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(failure.message), backgroundColor: Colors.red),
       );
     }
   }
@@ -97,7 +96,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                 const SizedBox(height: 8),
 
                 Text(
-                 '+95 ${widget.phoneNumber}',
+                  '+95 ${widget.phoneNumber}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

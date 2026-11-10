@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:j_donuts/app/theme/app_colors.dart';
 import 'package:j_donuts/core/utils/result.dart';
 import 'package:j_donuts/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:j_donuts/features/auth/presentation/widgets/registration_progress_bar.dart';
@@ -97,7 +98,10 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                   child: Text(
                     'Enter your phone number to get started.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
 
@@ -115,8 +119,22 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Enter phone number',
-                    prefixText: '+95 ',
-                    prefixStyle: const TextStyle(color: Colors.black),
+                    prefix: Padding(
+                      padding: const EdgeInsets.only(right: 12.0),
+                      child: const Text(
+                        '+95',
+                        style: TextStyle(
+                          color: AppColors.chocolate,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

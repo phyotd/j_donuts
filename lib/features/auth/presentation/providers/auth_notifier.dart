@@ -13,11 +13,21 @@ class AuthNotifier extends AsyncNotifier<User?> {
     return ref.read(sendOtpProvider)(phoneNumber: phoneNumber);
   }
 
-  Future<Result<void>> verifyOtp({
+  Future<Result<User?>> verifyOtp({
     required String phoneNumber,
     required String otp,
   }) async {
-    return ref.read(verifyOtpProvider)(phoneNumber: phoneNumber, otp: otp);
+    state = const AsyncLoading();
+    final result = await ref.read(verifyOtpProvider)(
+      phoneNumber: phoneNumber,
+      otp: otp,
+    );
+    if (result is Success<User?>) {
+      state = AsyncData(result.data);
+    } else {
+      state = const AsyncData(null);
+    }
+    return result;
   }
 
   Future<Result<User>> register({

@@ -5,6 +5,7 @@ import 'package:j_donuts/features/products/presentation/providers/product_provid
 
 // Import your existing auth notifier provider file.
 import 'package:j_donuts/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:j_donuts/features/rewards/presentation/screens/rewards_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -23,7 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final firstName = authState.when(
       data: (user) => user?.firstName ?? 'Member',
       loading: () => 'Member',
-      error: (_, __) => 'Member',
+      error: (_, _) => 'Member',
     );
 
     return Scaffold(
@@ -223,23 +224,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildRewardsTab() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.card_giftcard, size: 64, color: AppColors.primary),
-          SizedBox(height: 16),
-          Text(
-            'My Rewards',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Your rewards will appear here.',
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
-        ],
-      ),
-    );
+    return const RewardsScreen();
   }
 }

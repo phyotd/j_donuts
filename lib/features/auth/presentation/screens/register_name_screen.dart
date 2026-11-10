@@ -100,6 +100,7 @@ class _RegisterNameScreenState extends ConsumerState<RegisterNameScreen> {
 
                 TextFormField(
                   controller: _firstNameController,
+                  maxLength: 15,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     hintText: 'Enter your first name',
@@ -111,6 +112,10 @@ class _RegisterNameScreenState extends ConsumerState<RegisterNameScreen> {
                     if (value == null || value.trim().isEmpty) {
                       return 'Please enter your first name';
                     }
+
+                    if (value.trim().length > 15) {
+                      return 'First name must not exceed 15 characters';
+                    }
                     return null;
                   },
                 ),
@@ -118,7 +123,7 @@ class _RegisterNameScreenState extends ConsumerState<RegisterNameScreen> {
                 const SizedBox(height: 24),
 
                 const Text(
-                  'Last Name',
+                  'Last Name (Optional)',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
 
@@ -126,6 +131,7 @@ class _RegisterNameScreenState extends ConsumerState<RegisterNameScreen> {
 
                 TextFormField(
                   controller: _lastNameController,
+                  maxLength: 15,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     hintText: 'Enter your last name',
@@ -134,8 +140,8 @@ class _RegisterNameScreenState extends ConsumerState<RegisterNameScreen> {
                     ),
                   ),
                   validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your last name';
+                    if (value != null && value.trim().length > 15) {
+                      return 'Last name must not exceed 15 characters';
                     }
                     return null;
                   },

@@ -18,6 +18,7 @@ class MyApp extends ConsumerWidget {
     return initialization.when(
       data: (_) {
         return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           title: 'J Donuts',
           theme: AppTheme.lightTheme,
           routerConfig: appRouter,

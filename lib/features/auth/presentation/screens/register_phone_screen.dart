@@ -123,9 +123,9 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                 const SizedBox(height: 48),
                 const Center(
                   child: Icon(
-                    Icons.cake_outlined,
+                    Icons.donut_large,
                     size: 64,
-                    color: Colors.orange,
+                    color: AppColors.primary,
                   ),
                 ),
 
@@ -226,8 +226,6 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        // TODO: Open Terms of Use
-                        // onTap: () {},
                       ),
                       const TextSpan(text: ' and '),
                       TextSpan(
@@ -235,8 +233,6 @@ class _RegisterPhoneScreenState extends ConsumerState<RegisterPhoneScreen> {
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        // TODO: Open Privacy Policy
-                        // onTap: () {},
                       ),
                       const TextSpan(text: '.'),
                     ],

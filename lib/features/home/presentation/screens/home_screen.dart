@@ -69,9 +69,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          _buildMemberHeader(firstName),
           Expanded(
-            child: _selectedIndex == 0 ? _buildHomeTab() : _buildRewardsTab(),
+            child: _selectedIndex == 0
+                ? _buildHomeTab(firstName)
+                : _buildRewardsTab(),
           ),
         ],
       ),
@@ -129,14 +130,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Welcome back,',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 13,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
                   Text(
                     firstName,
                     style: const TextStyle(
@@ -144,6 +137,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        'Bronze Member',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Container(
+                        width: 4,
+                        height: 4,
+                        decoration: const BoxDecoration(
+                          color: Colors.grey,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '1,290 points',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -155,7 +176,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildHomeTab() {
+  Widget _buildHomeTab(String firstName) {
     final productsAsync = ref.watch(productsProvider);
 
     return productsAsync.when(
@@ -173,6 +194,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _buildMemberHeader(firstName),
               _buildProductSection(
                 title: 'Seasonal Specials',
                 products: seasonalProducts,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:j_donuts/app/theme/app_colors.dart';
+import 'package:intl/intl.dart';
 import 'package:j_donuts/features/products/domain/entities/product.dart';
 import 'package:j_donuts/features/products/presentation/screens/product_detail_screen.dart';
 
@@ -93,7 +94,7 @@ class ProductWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    '${product.price.toStringAsFixed(0)} MMK',
+                    PriceFormatter.format(product.price),
                     style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,
@@ -114,5 +115,13 @@ class ProductWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class PriceFormatter {
+  static final NumberFormat _formatter = NumberFormat('#,##0');
+
+  static String format(double price) {
+    return '${_formatter.format(price)} MMK';
   }
 }

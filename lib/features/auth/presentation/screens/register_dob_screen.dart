@@ -62,14 +62,7 @@ class _RegisterDobScreenState extends State<RegisterDobScreen> {
     setState(() => _isLoading = false);
 
     if (result is Success<User>) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Registration successful!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      context.go('/home');
+      context.go('/welcome', extra: widget.firstName);
     } else if (result is Error<User>) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

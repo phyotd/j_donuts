@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:j_donuts/features/auth/presentation/screens/register_name_screen.dart';
 import 'package:j_donuts/features/auth/presentation/screens/register_phone_screen.dart';
 import 'package:j_donuts/features/auth/presentation/screens/verify_otp_screen.dart';
+import 'package:j_donuts/features/auth/presentation/screens/welcome_screen.dart';
 import 'package:j_donuts/features/home/presentation/screens/home_screen.dart';
 import 'package:j_donuts/features/onboarding/presentation/screens/onboarding_screen.dart';
 
@@ -41,10 +42,14 @@ final appRouter = GoRouter(
       name: 'home',
       builder: (context, state) => const HomeScreen(),
     ),
-    // GoRoute(
-    //   path: '/rewards',
-    //   name: 'reward',
-    //   builder: (context, state) => const RewardsScreen(),
-    // ),
+    GoRoute(
+      path: '/welcome',
+      name: 'welcome',
+      builder: (context, state) {
+        final firstName = state.extra as String;
+
+        return WelcomeScreen(firstName: firstName);
+      },
+    ),
   ],
 );

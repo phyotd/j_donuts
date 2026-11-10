@@ -13,7 +13,7 @@ class ProductMockData {
       name: 'Coconut Donut',
       description: 'Enjoy our scrumptious coconut donut '
           'topped with delicious coconut flakes.',
-      imageUrl: 'https://example.com/images/coconut_donut.png',
+      imageUrl: 'assets/images/donuts/coconut.jpeg',
     ),
     ProductModel(
       id: 'p_chocolate',
@@ -24,7 +24,7 @@ class ProductMockData {
       name: 'Chocolate Donut',
       description: 'Soft and fluffy donut covered with '
           'rich chocolate glaze.',
-      imageUrl: 'https://example.com/images/chocolate_donut.png',
+      imageUrl: 'assets/images/donuts/chocolate.jpeg',
     ),
     ProductModel(
       id: 'p_strawberry',
@@ -35,7 +35,7 @@ class ProductMockData {
       name: 'Strawberry Donut',
       description: 'Delicious donut with sweet strawberry '
           'icing and colorful toppings.',
-      imageUrl: 'https://example.com/images/strawberry_donut.png',
+      imageUrl: 'assets/images/donuts/strawberry.jpeg',
     ),
     ProductModel(
       id: 'p_matcha',
@@ -46,7 +46,7 @@ class ProductMockData {
       name: 'Matcha Donut',
       description: 'A soft donut topped with Japanese '
           'matcha-flavored glaze.',
-      imageUrl: 'https://example.com/images/matcha_donut.png',
+      imageUrl: 'assets/images/donuts/matcha.jpeg',
     ),
     ProductModel(
       id: 'p_vanilla',
@@ -57,7 +57,7 @@ class ProductMockData {
       name: 'Vanilla Donut',
       description: 'Classic soft donut with smooth '
           'and sweet vanilla glaze.',
-      imageUrl: 'https://example.com/images/vanilla_donut.png',
+      imageUrl: 'assets/images/donuts/vanilla.jpeg',
     ),
     ProductModel(
       id: 'p_oreo',
@@ -68,7 +68,7 @@ class ProductMockData {
       name: 'Oreo Cream Donut',
       description: 'Cream-filled donut topped with '
           'crushed chocolate cookies.',
-      imageUrl: 'https://example.com/images/oreo_donut.png',
+      imageUrl: 'assets/images/donuts/oreo.jpeg',
     ),
     ProductModel(
       id: 'p_boston',
@@ -79,7 +79,7 @@ class ProductMockData {
       name: 'Boston Cream Donut',
       description: 'Classic donut filled with smooth '
           'vanilla custard and chocolate topping.',
-      imageUrl: 'https://example.com/images/boston_cream.png',
+      imageUrl: 'assets/images/donuts/boston.jpeg',
     ),
     ProductModel(
       id: 'p_caramel',
@@ -90,7 +90,7 @@ class ProductMockData {
       name: 'Caramel Donut',
       description: 'Fresh donut covered with sweet '
           'caramel sauce.',
-      imageUrl: 'https://example.com/images/caramel_donut.png',
+      imageUrl: 'assets/images/donuts/caramel.jpeg',
     ),
     ProductModel(
       id: 'p_blueberry',
@@ -101,7 +101,7 @@ class ProductMockData {
       name: 'Blueberry Donut',
       description: 'Soft donut with fruity blueberry '
           'glaze and delicious toppings.',
-      imageUrl: 'https://example.com/images/blueberry_donut.png',
+      imageUrl: 'assets/images/donuts/blueberry.jpeg',
     ),
     ProductModel(
       id: 'p_sugar',
@@ -112,7 +112,7 @@ class ProductMockData {
       name: 'Sugar Donut',
       description: 'Simple and fluffy donut coated '
           'with fine powdered sugar.',
-      imageUrl: 'https://example.com/images/sugar_donut.png',
+      imageUrl: 'assets/images/donuts/sugar.jpeg',
     ),
   ];
 }

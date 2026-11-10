@@ -5,8 +5,9 @@ import 'package:j_donuts/features/products/domain/entities/product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
+  final String heroTag;
 
-  const ProductDetailScreen({super.key, required this.product});
+  const ProductDetailScreen({super.key, required this.product, required this.heroTag});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -58,7 +59,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildProductImage(product),
+            _buildProductImage(product, widget.heroTag),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -146,7 +147,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  Widget _buildProductImage(Product product) {
+  Widget _buildProductImage(Product product, String heroTag) {
     return Stack(
       children: [
         Container(
@@ -154,7 +155,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           height: 280,
           color: AppColors.primaryLight,
           child: Hero(
-            tag: 'product-${product.id}',
+            tag: heroTag,
             child: Image.asset(
               product.imageUrl,
               fit: BoxFit.cover,

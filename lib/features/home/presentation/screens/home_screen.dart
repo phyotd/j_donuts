@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:j_donuts/app/theme/app_colors.dart';
 import 'package:j_donuts/core/utils/result.dart';
 import 'package:go_router/go_router.dart';
+import 'package:j_donuts/features/home/data/datasources/banner_mock_data.dart';
+import 'package:j_donuts/features/home/presentation/widgets/banner_carousel.dart';
 import 'package:j_donuts/features/products/presentation/providers/product_providers.dart';
 
 // Import your existing auth notifier provider file.
@@ -195,14 +197,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildMemberHeader(firstName),
+              BannerCarousel(banners: BannerMockData.banners),
+              const SizedBox(height: 24),
               _buildProductSection(
                 title: 'Seasonal Specials',
                 products: seasonalProducts,
+                heroTagString: 'seasonal',
               ),
               const SizedBox(height: 24),
-              _buildProductSection(title: 'Popular', products: popularProducts),
+              _buildProductSection(title: 'Popular', products: popularProducts, heroTagString: 'popular'),
               const SizedBox(height: 24),
-              _buildProductSection(title: 'All Donuts', products: products),
+              _buildProductSection(title: 'All Donuts', products: products, heroTagString: 'all'),
             ],
           ),
         );
@@ -217,6 +222,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildProductSection({
     required String title,
     required List<Product> products,
+    required String heroTagString,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,7 +251,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               itemBuilder: (context, index) {
                 return SizedBox(
                   width: 165,
-                  child: ProductWidget(product: products[index]),
+                  child: ProductWidget(
+                    product: products[index],
+                    heroTag: '$heroTagString-${products[index].id}',
+                  ),
                 );
               },
             ),

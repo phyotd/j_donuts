@@ -40,6 +40,7 @@ class WelcomeScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
+                      color: AppColors.background
                     ),
                   ),
 

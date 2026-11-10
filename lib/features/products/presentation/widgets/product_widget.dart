@@ -6,8 +6,9 @@ import 'package:j_donuts/features/products/presentation/screens/product_detail_s
 
 class ProductWidget extends StatelessWidget {
   final Product product;
+  final String heroTag;
 
-  const ProductWidget({super.key, required this.product});
+  const ProductWidget({super.key, required this.product, required this.heroTag});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ProductWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(product: product),
+            builder: (context) => ProductDetailScreen(product: product, heroTag: heroTag),
           ),
         );
       },
@@ -34,7 +35,7 @@ class ProductWidget extends StatelessWidget {
                     width: double.infinity,
                     color: AppColors.primaryLight,
                     child: Hero(
-                      tag: 'product-${product.id}',
+                      tag: heroTag,
                       child: Image.asset(
                         product.imageUrl,
                         width: double.infinity,
